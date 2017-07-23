@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 */
 const ReduxAsyncFetcher = getAsyncData => SubComponent => {
   class Fetch extends React.Component {
-    componentWillMount() {
+    componentDidMount() {
       const { store } = this.context
       getAsyncData(store.dispatch, this.props, store.getState())
     }

@@ -24,7 +24,7 @@ describe('ReduxAsyncFetcher HOC', () => {
     setTimeout(() => resolve(fakeFetchResult), 400)
   })
 
-  // Connect an action logic to our component componentWillMount
+  // Connect an action logic to our component componentDidMount
   const ComponentWithoutFetchingLogic = ReduxAsyncFetcher(dispatch => {
     fetchTodoList().then(result => dispatch(success(result)))
   })(SimpleComponent)
