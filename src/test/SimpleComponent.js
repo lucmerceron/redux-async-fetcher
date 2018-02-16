@@ -7,6 +7,10 @@ class SimpleComponent extends React.Component {
 
     lifeCycleCallback('didMount', todoList)
   }
+  componentDidUpdate() {
+    const { lifeCycleCallback, todoList } = this.props
+    lifeCycleCallback('didUpdate', todoList)
+  }
 
   render() {
     return (

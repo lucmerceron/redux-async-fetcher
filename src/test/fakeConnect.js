@@ -8,7 +8,7 @@ const fakeConnect = mapStateToProps => Component => {
       const { store } = this.context
 
       const props = mapStateToProps(store.getState())
-      return <Component {...props} {...this.props}/>
+      return <Component {...this.props} {...props} />
     }
   }
 

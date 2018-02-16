@@ -18,9 +18,17 @@ npm install --save redux-async-fetcher
 ReduxAsyncFetcher takes a data fetching function as parameter and returns a [Higher Order Component](https://facebook.github.io/react/docs/higher-order-components.html); by giving it a component, it will return an enhanced component.
 
 ```javascript
-const EnhancedComponent = reduxAsyncFetcher(asyncDataFetch)(NormalComponent)
+const EnhancedComponent = reduxAsyncFetcher(asyncDataFetch, [propsToWatch])(NormalComponent)
 ```
-`EnhancedComponent` is a simple component that will call `asyncDataFetch` function when it did mount. Pass to it the props you wish to convey to your NormalComponent and it will work as expected.
+
+### Arguments
+
+* `asyncDataFetch` (Function): Function that will be called at `NormalComponent` *componentDidMount* hook.
+* `propsToWatch` (Array): Default value: []. Array of props name that will trigger `asyncDataFetch` at `NormalComponent` *componentDidUpdate* hook if shallow comparison between **propsToWatch** lastProps and props is false.
+
+### Usage
+
+Pass to **EnhancedComponent** the props you wish to convey to your NormalComponent.
 ```javascript
 const normalComponentProps = {
   title: 'ReactAsyncFetcher is cool',
@@ -28,7 +36,10 @@ const normalComponentProps = {
 }
 <EnhancedComponent {...normalComponentProps} />
 ```
-The `asyncDataFetch` function is the place you want to put the code that will fetch data. It will be called from our EnhancedComponent with three parameters: dispatch (from store), props (given to EnhancedComponent) and the state (from store).
+
+Put code that fetch data in the `asyncDataFetch` and precise `propsToWatch` names if you want to retrigger your data fetching on some props change.
+`asyncDataFetch` is called three parameters: dispatch, props and the state of the store.
+
 ```javascript
 // dispatch & state are taken from our Redux store (Hence the Provider dependency)
 const asyncDataFetch = (dispatch, props, state) => {
@@ -41,7 +52,7 @@ const asyncDataFetch = (dispatch, props, state) => {
 
 ### In the wild
 
-When you separate your component into [Presentational and Container components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0), ReduxAsyncFetcher perfectly fit into your container components. Here is a complete exemple on how to use it.
+When you separate your component into [Presentational and Container components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0), ReduxAsyncFetcher perfectly fit into your container components.
 
 ```javascript
 import { connect } from 'react-redux'
@@ -53,7 +64,7 @@ import { getUser, editUser } from '../../../actionCreators/users'
 
 const mapStateToProps = (state, ownProps) => ({
   users: state.users,
-  // Exemple with router parameter
+  // Example with router parameter
   userId: ownProps.match.params.userId,
 })
 
@@ -67,7 +78,9 @@ const asyncDataFetch = (dispatch, props, state) => {
 }
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(reduxAsyncFetcher(getAsyncState)(UserView)))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(
+    reduxAsyncFetcher(getAsyncState, ['userId'])(UserView)))
 
 
 ```
