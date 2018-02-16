@@ -2,7 +2,7 @@
   "name": "redux-async-fetcher",
   "version": "0.0.0-development",
   "description": "Extract data fetching logic from your component lifecycle ",
-  "main": "dist.index.js",
+  "main": "dist/index.js",
   "scripts": {
     "lint": "eslint ./src",
     "commit": "git-cz",
