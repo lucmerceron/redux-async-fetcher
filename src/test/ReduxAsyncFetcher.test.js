@@ -1,11 +1,10 @@
 import React from 'react'
+import { connect, Provider } from 'react-redux'
 import { mount } from 'enzyme'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import SimpleComponent from './SimpleComponent'
-import FakeProvider from './FakeProvider'
-import fakeConnect from './fakeConnect'
 import ReduxAsyncFetcher from '../ReduxAsyncFetcher'
 
 describe('ReduxAsyncFetcher HOC', () => {
@@ -16,38 +15,22 @@ describe('ReduxAsyncFetcher HOC', () => {
   const fakeFetchResult = ['Star the repo', 'Ask me if anything is unclear']
   const getAsyncDataCall = jest.fn()
   const getAsyncDataCall2 = jest.fn()
-  const fakeAction = result => ({
-    type: 'FETCH_TODOLIST_SUCCESS',
-    todoList: result,
-  })
-  // The promise to fetch our data (should be an action)
-  const fetchTodoList = () => new Promise(resolve => {
-    setTimeout(() => resolve(fakeFetchResult), 400)
-  })
 
   // Connect an action logic to our component componentDidMount
   const ComponentWithFetchingLogic = ReduxAsyncFetcher(dispatch => {
-    fetchTodoList().then(result => {
-      dispatch(fakeAction(result))
-      todoStore.todoList = fakeAction(result).todoList
-    })
-    getAsyncDataCall()
+    getAsyncDataCall(dispatch)
   }, ['todoList'])(SimpleComponent)
 
   const ComponentWithFetchingLogicWatcher = ReduxAsyncFetcher(dispatch => {
-    fetchTodoList().then(result => {
-      dispatch(fakeAction(result))
-      todoStore.todoList = fakeAction(result).todoList
-    })
-    getAsyncDataCall2()
+    getAsyncDataCall2(dispatch)
   })(SimpleComponent)
 
   // Give the store with our fakeConnect to our SimpleComponent
-  const ConnectedComponent = fakeConnect(store => ({ todoList: store.todoList }))(SimpleComponent)
+  const ConnectedComponent = connect(store => ({ todoList: store.todoList }), {})(SimpleComponent)
   const ConnectedComponentWithLogic =
-    fakeConnect(store => ({ todoList: store.todoList }))(ComponentWithFetchingLogic)
+    connect(store => ({ todoList: store.todoList }), {})(ComponentWithFetchingLogic)
   const ConnectedComponentWithFetchingLogicWatcher =
-    fakeConnect(store => ({ todoList: store.todoList }))(ComponentWithFetchingLogicWatcher)
+    connect(store => ({ todoList: store.todoList }), {})(ComponentWithFetchingLogicWatcher)
 
   // The props of our SimpleComponent
   const props = {
@@ -60,17 +43,17 @@ describe('ReduxAsyncFetcher HOC', () => {
   }
   // Mount the whole with Enzyme
   const ComponentWrapper = mount(
-    <FakeProvider store={fakeStore}>
+    <Provider store={fakeStore}>
       <ConnectedComponent {...props} />
-    </FakeProvider>)
+    </Provider>)
   const ComponentWithLogicWrapper = mount(
-    <FakeProvider store={fakeStore}>
+    <Provider store={fakeStore}>
       <ConnectedComponentWithLogic {...props} />
-    </FakeProvider>)
+    </Provider>)
   const ComponentWithFetchingLogicWatcherWrapper = mount(
-    <FakeProvider store={fakeStore}>
+    <Provider store={fakeStore}>
       <ConnectedComponentWithFetchingLogicWatcher {...props2} />
-    </FakeProvider>)
+    </Provider>)
 
   it('should normally render title', () => {
     expect(ComponentWrapper.text()).toContain(props.title)
@@ -83,24 +66,21 @@ describe('ReduxAsyncFetcher HOC', () => {
   it('should call lifeCycleCallback on didMount with empty todoList', () => {
     expect(props.lifeCycleCallback).toBeCalledWith('didMount', [])
   })
-  it('should correctly call our getAsyncData on component willMount and dispatch action', done => {
-    setTimeout(() => {
-      expect(fakeStore.getActions()[0]).toEqual(fakeAction(fakeFetchResult))
-      done()
-    }, 500)
+  it('should call our getAsyncData with a valid dispatch', () => {
+    expect(getAsyncDataCall).toHaveBeenCalledWith(fakeStore.dispatch)
   })
   it('should call our getAsyncData if updated prop is watched', () => {
     // The store has been updated
     expect(getAsyncDataCall).toHaveBeenCalledTimes(1)
-    ComponentWithLogicWrapper.update()
-    expect(props.lifeCycleCallback).toBeCalledWith('didUpdate', fakeFetchResult)
+    ComponentWithLogicWrapper.setProps({ store: mockStore({ todoList: fakeFetchResult }) })
+    expect(props.lifeCycleCallback).toHaveBeenCalledWith('didUpdate', fakeFetchResult)
     expect(getAsyncDataCall).toHaveBeenCalledTimes(2)
   })
   it('should not call our getAsyncData if updated prop is not watched', () => {
     // The store has been updated
     expect(getAsyncDataCall2).toHaveBeenCalledTimes(1)
-    ComponentWithFetchingLogicWatcherWrapper.update()
-    expect(props2.lifeCycleCallback).toBeCalledWith('didUpdate', fakeFetchResult)
+    ComponentWithFetchingLogicWatcherWrapper.setProps({ store: mockStore({ todoList: fakeFetchResult }) })
+    expect(props2.lifeCycleCallback).toHaveBeenCalledWith('didUpdate', fakeFetchResult)
     expect(getAsyncDataCall2).toHaveBeenCalledTimes(1)
   })
 })
