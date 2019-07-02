@@ -1,14 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { ReactReduxContext } from 'react-redux'
 
 /*
-* FetchData is a Higher Order Component used to FetchData in place of and for a subComponent
+* ReduxAsyncFetcher is a Higher Order Component used to FetchData in place of and for a subComponent
 * It need to be connected to the store so react-redux Provider is needed for this to work
-* FetchData will call getAsyncState with two params: dispatch and connectedProps
+* ReduxAsyncFetcher will call getAsyncState with two params: dispatch and connectedProps
 * propsChangeToWatch may be provided and is useful to trigger the getAsyncState function on specific change
 */
 const ReduxAsyncFetcher = (getAsyncState, propsChangeToWatch = []) => SubComponent => {
   class Fetch extends React.Component {
+    static contextType = ReactReduxContext
     componentDidMount() {
       this.fetchData()
     }
@@ -25,10 +26,6 @@ const ReduxAsyncFetcher = (getAsyncState, propsChangeToWatch = []) => SubCompone
     render() {
       return <SubComponent {...this.props} />
     }
-  }
-
-  Fetch.contextTypes = {
-    store: PropTypes.object.isRequired,
   }
 
   return Fetch
