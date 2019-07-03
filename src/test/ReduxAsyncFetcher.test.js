@@ -27,10 +27,8 @@ describe('ReduxAsyncFetcher HOC', () => {
 
   // Give the store with our fakeConnect to our SimpleComponent
   const ConnectedComponent = connect(store => ({ todoList: store.todoList }), {})(SimpleComponent)
-  const ConnectedComponentWithLogic =
-    connect(store => ({ todoList: store.todoList }), {})(ComponentWithFetchingLogic)
-  const ConnectedComponentWithFetchingLogicWatcher =
-    connect(store => ({ todoList: store.todoList }), {})(ComponentWithFetchingLogicWatcher)
+  const ConnectedComponentWithLogic = connect(store => ({ todoList: store.todoList }), {})(ComponentWithFetchingLogic)
+  const ConnectedComponentWithFetchingLogicWatcher = connect(store => ({ todoList: store.todoList }), {})(ComponentWithFetchingLogicWatcher)
 
   // The props of our SimpleComponent
   const props = {
@@ -45,15 +43,18 @@ describe('ReduxAsyncFetcher HOC', () => {
   const ComponentWrapper = mount(
     <Provider store={fakeStore}>
       <ConnectedComponent {...props} />
-    </Provider>)
+    </Provider>,
+  )
   const ComponentWithLogicWrapper = mount(
     <Provider store={fakeStore}>
       <ConnectedComponentWithLogic {...props} />
-    </Provider>)
+    </Provider>,
+  )
   const ComponentWithFetchingLogicWatcherWrapper = mount(
     <Provider store={fakeStore}>
       <ConnectedComponentWithFetchingLogicWatcher {...props2} />
-    </Provider>)
+    </Provider>,
+  )
 
   it('should normally render title', () => {
     expect(ComponentWrapper.text()).toContain(props.title)

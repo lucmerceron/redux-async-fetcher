@@ -10,14 +10,20 @@ import { ReactReduxContext } from 'react-redux'
 const ReduxAsyncFetcher = (getAsyncState, propsChangeToWatch = []) => SubComponent => {
   class Fetch extends React.Component {
     static contextType = ReactReduxContext
+
     componentDidMount() {
       this.fetchData()
     }
+
     componentDidUpdate(lastProps) {
-      if (propsChangeToWatch.some(prop => this.props[prop] !== lastProps[prop])) {
+      if (propsChangeToWatch.some(prop => {
+        const { [prop]: previous } = this.props
+        return previous !== lastProps[prop]
+      })) {
         this.fetchData()
       }
     }
+
     fetchData() {
       const { store } = this.context
       getAsyncState(store.dispatch, this.props, store.getState())

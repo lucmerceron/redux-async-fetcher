@@ -7,15 +7,17 @@ class SimpleComponent extends React.Component {
 
     lifeCycleCallback('didMount', todoList)
   }
+
   componentDidUpdate() {
     const { lifeCycleCallback, todoList } = this.props
     lifeCycleCallback('didUpdate', todoList)
   }
 
   render() {
+    const { title } = this.props
     return (
       <div className="simple-normal-component">
-        <h1>{this.props.title}</h1>
+        <h1>{title}</h1>
       </div>
     )
   }
