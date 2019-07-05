@@ -17,8 +17,8 @@ const ReduxAsyncFetcher = (getAsyncState, propsChangeToWatch = []) => SubCompone
 
     componentDidUpdate(lastProps) {
       if (propsChangeToWatch.some(prop => {
-        const { [prop]: previous } = this.props
-        return previous !== lastProps[prop]
+        const { [prop]: current } = this.props
+        return current !== lastProps[prop]
       })) {
         this.fetchData()
       }
