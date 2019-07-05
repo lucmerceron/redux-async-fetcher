@@ -15,7 +15,7 @@
     "test:watch": "jest --watch",
     "build": "babel --out-dir dist --ignore *.test.js,./src/test/* src",
     "prebuild": "rimraf dist",
-    "semantic-release": "semantic-release && npm publish"
+    "semantic-release": "semantic-release"
   },
   "jest": {
     "transform": {
