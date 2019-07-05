@@ -3,7 +3,7 @@
 
 ReduxAsyncFetcher is used to extract data fetching logic from your component lifecycle.
 
-[![Travis Build](https://img.shields.io/travis/wing-eu/redux-async-fetcher.svg?style=flat-square)](https://travis-ci.org/wing-eu/redux-async-fetcher/) [![Version](https://img.shields.io/npm/v/redux-async-fetcher.svg?style=flat-square)](https://github.com/wing-eu/lucmerceron/redux-async-fetcher/releases) [![Code Coverage](https://img.shields.io/codecov/c/github/wing-eu/redux-async-fetcher.svg?style=flat-square)](https://codecov.io/gh/wing-eu/redux-async-fetcher)
+[![Travis Build](https://img.shields.io/travis/lucmerceron/redux-async-fetcher.svg?style=flat-square)](https://travis-ci.org/lucmerceron/redux-async-fetcher/) [![Version](https://img.shields.io/npm/v/redux-async-fetcher.svg?style=flat-square)](https://github.com/lucmerceron/redux-async-fetcher/releases) [![Code Coverage](https://img.shields.io/codecov/c/github/lucmerceron/redux-async-fetcher.svg?style=flat-square)](https://codecov.io/gh/lucmerceron/redux-async-fetcher)
 
 ## Installation
 
@@ -88,7 +88,7 @@ export default withRouter(
 ## Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-You can find every release documented on the [Releases](https://github.com/wing-eu/redux-async-fetcher/releases) page.
+You can find every release documented on the [Releases](https://github.com/lucmerceron/redux-async-fetcher/releases) page.
 
 ## License
 MIT
