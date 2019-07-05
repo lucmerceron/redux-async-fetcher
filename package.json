@@ -42,7 +42,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/wing-eu/redux-async-fetcher.git"
+    "url": "https://github.com/lucmerceron/redux-async-fetcher.git"
   },
   "keywords": [
     "react",
@@ -55,9 +55,9 @@
   "author": "Luc Merceron <luc.merceron.developer@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wing-eu/redux-async-fetcher/issues"
+    "url": "https://github.com/lucmerceron/redux-async-fetcher/issues"
   },
-  "homepage": "https://github.com/wing-eu/redux-async-fetcher#readme",
+  "homepage": "https://github.com/lucmerceron/redux-async-fetcher#readme",
   "dependencies": {
     "prop-types": "15.7.2",
     "react": "16.8.6",
