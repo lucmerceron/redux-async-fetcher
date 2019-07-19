@@ -18,13 +18,13 @@ npm install --save redux-async-fetcher
 ReduxAsyncFetcher takes a data fetching function as parameter and returns a [Higher Order Component](https://facebook.github.io/react/docs/higher-order-components.html); by giving it a component, it will return an enhanced component.
 
 ```javascript
-const EnhancedComponent = reduxAsyncFetcher(asyncDataFetch, [propsToWatch])(NormalComponent)
+const EnhancedComponent = reduxAsyncFetcher(getAsyncState, [propsToWatch])(NormalComponent)
 ```
 
 ### Arguments
 
-* `asyncDataFetch` (Function): Function that will be called at `NormalComponent` *componentDidMount* hook.
-* `propsToWatch` (Array): Default value: []. Array of props name that will trigger `asyncDataFetch` at `NormalComponent` *componentDidUpdate* hook if shallow comparison between **propsToWatch** lastProps and props is false.
+* `getAsyncState` (Function): Function that will be called at `NormalComponent` *componentDidMount* hook.
+* `propsToWatch` (Array): Default value: []. Array of props name that will trigger `getAsyncState` at `NormalComponent` *componentDidUpdate* hook if shallow comparison between **propsToWatch** lastProps and props is false.
 
 ### Usage
 
@@ -37,12 +37,12 @@ const normalComponentProps = {
 <EnhancedComponent {...normalComponentProps} />
 ```
 
-Put code that fetch data in the `asyncDataFetch` and precise `propsToWatch` names if you want to retrigger your data fetching on some props change.
-`asyncDataFetch` is called three parameters: dispatch, props and the state of the store.
+Put code that fetch data in the `getAsyncState` and precise `propsToWatch` names if you want to retrigger your data fetching on some props change.
+`getAsyncState` is called three parameters: dispatch, props and the state of the store.
 
 ```javascript
 // dispatch & state are taken from our Redux store (Hence the Provider dependency)
-const asyncDataFetch = (dispatch, props, state) => {
+const getAsyncState = (dispatch, props, state) => {
   // Here I can trigger my Redux actions like I would normally do from my NormalComponent
   // I can use some logic with props & state
   if (state.todoList.length === 0)
@@ -72,7 +72,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   editUser: user => dispatch(editUser(ownProps.match.params.userId, user)),
 })
 
-const asyncDataFetch = (dispatch, props, state) => {
+const getAsyncState = (dispatch, props, state) => {
   if (state.users.indexOf(props.userId) === -1)
     dispatch(getUser(props.userId))
 }
