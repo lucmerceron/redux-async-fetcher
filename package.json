@@ -94,7 +94,7 @@
     "redux-mock-store": "1.5.3",
     "redux-thunk": "2.3.0",
     "rimraf": "2.6.3",
-    "semantic-release": "15.13.18"
+    "semantic-release": "17.2.3"
   },
   "babel": {
     "presets": [
